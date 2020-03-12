@@ -1,5 +1,5 @@
 import sys, re, os
-regex = b"(wa.+-boot\.bin)|(wa.+-system\.bin)"
+regex = b"(?i)\x00[\w\-\d]*\.bin\x00"
 filename_chunk_size = 224
 content_header_size = 12
 '''
@@ -55,7 +55,7 @@ if __name__ == "__main__":
             if next_match == None:
                 print("Done.")
                 break
-            next_filename_offset = seeked_bytes + next_match.start() # starting location of the continuing .bin
+            next_filename_offset = seeked_bytes + next_match.start() + 1 # starting location of the continuing .bin, ignore dummy \x00 when doing regex matching
             archived_filesize = get_file_size_int(raw_ipe, next_filename_offset, check_file_endian(raw_ipe, next_filename_offset))
             seeked_bytes = next_filename_offset + filename_chunk_size + content_header_size + archived_filesize
             archived_filename = get_filename_at_offset(raw_ipe, next_filename_offset)
