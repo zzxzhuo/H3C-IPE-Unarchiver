@@ -1,0 +1,23 @@
+Modified specifically to extract archived rootfs contained in Comware v7 system.bin
+
+Tested platform:
+* VAC1000 R5435P03
+* WX2560H R5447P03
+
+USAGE: python3 unarchive_ipe.py system.bin
+
+==
+
+The vendor implemented a fixed length (6520 bytes) header which specifies the filename
+and size being archived in the blob at static offset 0x188C to 0x1978. A pseudo definition
+looks like
+
+ ---------------------------------------------
+| filename | filesize | UNKNOWN |    tail?    |
+|  224 b   |   4 b    |   4 b   |  0xffffffff |
+ ---------------------------------------------
+
+This structure is identical to what's being defined for IPE archives I discovered a
+few years ago (refer to master branch).
+
+The only difference being the rootfs package has an explicit filename "mpu.cpio.gz".

@@ -1,5 +1,5 @@
 import sys, re, os
-regex = b"(?i)\x00[\w\-\d]*\.bin\x00"
+regex = b"(?i)\x00mpu\.cpio\.gz\x00"
 filename_chunk_size = 224
 content_header_size = 12
 '''
